@@ -1,7 +1,6 @@
 streamlit
-MATPLOTLIB 
-PANDAS 
-SEABORN
-SKLEARN.LINEAR MODEL 
-LINEAR REGRESION 
-
+pandas
+matplotlib
+seaborn
+scikit-learn
+numpy
