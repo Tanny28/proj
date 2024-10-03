@@ -4,6 +4,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
 import numpy as np
+import logging
+logging.basicConfig(level=logging.INFO)
+
+logging.info("App is starting...")
+
+# rest of your app code
 
 # Title and Description
 st.title("AI-powered Climate Change Tracker")
