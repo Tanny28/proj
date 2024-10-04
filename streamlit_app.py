@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
-import nbformat  # For reading Jupyter Notebook files
+import nbformat
 
 # Title of the app
 st.title("AI Climate Prediction App")
@@ -38,10 +38,13 @@ if uploaded_file is not None:
             # Assume the last code cell has the dataframe creation statement
             if code_cells:
                 # Execute the last cell to get the dataframe (this is a simplistic approach)
-                exec(code_cells[-1], globals())  # Be cautious with exec in production environments!
+                exec(code_cells[-1], globals())
                 data = globals().get('data')  # Replace 'data' with your actual dataframe variable name
+                
                 if data is None:
                     st.error("The last code cell did not define a variable named 'data'. Please check your notebook.")
+                else:
+                    st.success("Data loaded from Jupyter Notebook!")
             else:
                 st.error("No code cells found in the Jupyter Notebook.")
 
