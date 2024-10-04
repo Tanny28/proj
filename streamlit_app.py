@@ -1,25 +1,21 @@
-# app.py
-
-# Import necessary libraries
 import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 
-# Page title
-st.title("AI-Powered Climate Change Prediction Platform")
+# Title of the app
+st.title("AI Climate Prediction App")
 
-# Sidebar for uploading data
-st.sidebar.header("Upload Climate Data")
-uploaded_file = st.sidebar.file_uploader("Upload your climate dataset in CSV format", type=["csv"])
+# File uploader for the CSV dataset
+uploaded_file = st.file_uploader("Upload your climate data CSV file", type=["csv"])
 
 # Check if the user has uploaded a dataset
 if uploaded_file is not None:
     st.success("File uploaded successfully!")
-    
+
     # Load the data into a dataframe
     data = pd.read_csv(uploaded_file)
     st.write("### Uploaded Climate Dataset")
@@ -32,6 +28,7 @@ if uploaded_file is not None:
     # Select the target variable
     target = st.sidebar.selectbox("Select the Target Variable", options=data.columns)
 
+    # Ensure both features and target are selected before proceeding
     if features and target:
         st.write(f"### Selected Features: {features}")
         st.write(f"### Target Variable: {target}")
@@ -60,25 +57,17 @@ if uploaded_file is not None:
         plt.legend()
         st.pyplot(plt.figure())
 
+        # Input form for prediction based on live data
+        st.sidebar.subheader("Predict Climate Indicator")
+        user_inputs = {}
+        for feature in features:
+            user_inputs[feature] = st.sidebar.number_input(f"Input {feature}")
+
+        # Predict when the user clicks the button
+        if st.sidebar.button("Predict Climate Indicator"):
+            input_data = pd.DataFrame([user_inputs])
+            prediction = model.predict(input_data)
+            st.sidebar.write(f"Predicted {target}: {prediction[0]:.2f}")
+
 else:
     st.warning("Please upload a CSV dataset to start")
-
-# Display an input form for prediction based on live data
-st.sidebar.subheader("Predict Climate Indicator")
-user_inputs = {}
-if features:
-    for feature in features:
-        user_inputs[feature] = st.sidebar.number_input(f"Input {feature}")
-
-    # Convert user input into a dataframe for prediction
-    if st.sidebar.button("Predict Climate Indicator"):
-        input_data = pd.DataFrame([user_inputs])
-        prediction = model.predict(input_data)
-        st.sidebar.write(f"Predicted {target}: {prediction[0]:.2f}")
-
-# Footer for credits and deployment details
-st.markdown("""
----
-**Deployed on:** Vultr Cloud Platform  
-**Developed by:** AI Climate Tracker Team
-""")
